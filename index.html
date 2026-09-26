@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#123743">
+  <title>Экспертная система анализа конфиденциальной информации</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink:#4a2941; --muted:#816778; --line:#ead7e3; --paper:#fff8fc;
+      --card:#fffdfd; --teal:#c14f87; --teal-dark:#9b3568; --teal-soft:#f9e3ef;
+      --red:#a93d54; --red-soft:#fbe5ea; --gold:#c08a3c; --gold-soft:#fff0dc;
+      --blue-soft:#eee6fa; --shadow:0 20px 48px rgba(113,49,86,.11);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:radial-gradient(circle at 88% 3%,rgba(237,157,200,.26),transparent 25rem),radial-gradient(circle at 8% 32%,rgba(207,183,239,.2),transparent 24rem),linear-gradient(180deg,#fff1f8 0,var(--paper) 24rem);font:16px/1.55 Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    button,textarea,input{font:inherit} button{cursor:pointer}
+    .shell{width:min(1120px,calc(100% - 36px));margin:auto;padding:34px 0 64px}
+    .topline,.section-head,.card-head,.label-row,.result-head-row,.test-top,.test-foot,.footer{display:flex;align-items:center;justify-content:space-between;gap:14px}
+    .topline{margin-bottom:28px}
+    .brand{display:flex;align-items:center;gap:11px;font-size:13px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#79556d}
+    .brand-mark{width:36px;height:36px;display:grid;place-items:center;border-radius:50% 50% 44% 56%;background:linear-gradient(145deg,#d85f98,#a9437c);color:#fff;font-size:18px;box-shadow:0 7px 16px rgba(193,79,135,.27)}
+    .badge{border:1px solid #e8cddd;border-radius:999px;padding:7px 12px;color:#8d5877;background:rgba(255,253,255,.76);font-size:12px;font-weight:700}
+    .hero{position:relative;overflow:hidden;padding:38px 42px 36px;border-radius:28px;color:#fff;background:linear-gradient(125deg,#6c315d 0%,#9c4677 48%,#d36c9f 100%);box-shadow:0 22px 54px rgba(117,43,84,.2)}
+    .hero:after{content:"";position:absolute;width:330px;height:330px;border:1px solid rgba(255,255,255,.12);border-radius:50%;right:-78px;top:-164px;box-shadow:0 0 0 30px rgba(255,255,255,.035),0 0 0 66px rgba(255,255,255,.025);pointer-events:none}
+    .eyebrow{color:#f8d8e9;font-size:12px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+    h1{max-width:790px;margin:12px 0 10px;font:650 clamp(31px,5vw,50px)/1.06 Georgia,"Times New Roman",serif;letter-spacing:-.025em}
+    .hero p{max-width:720px;margin:0;color:#f8e9f1}.hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}.hero-tags span{border:1px solid rgba(255,255,255,.25);padding:6px 10px;border-radius:999px;color:#fff5fa;background:rgba(255,255,255,.07);font-size:12px}
+    .grid{display:grid;grid-template-columns:minmax(0,1.65fr) minmax(260px,.8fr);gap:20px;align-items:start;margin-top:20px}
+    .card{border:1px solid var(--line);border-radius:21px;background:var(--card);box-shadow:0 10px 28px rgba(103,54,83,.06)}
+    .workbench{padding:24px}.card-head{align-items:flex-start;margin-bottom:18px}h2{margin:0;font:650 25px/1.2 Georgia,"Times New Roman",serif}.sub{margin:7px 0 0;color:var(--muted);font-size:14px}.counter{flex:none;padding:5px 9px;border-radius:999px;background:#fbedf5;color:#925776;font-size:11px;font-weight:800}
+    .label-row{margin:18px 0 8px}label{font-size:13px;font-weight:800}.tiny{color:var(--muted);font-size:12px}
+    textarea{width:100%;min-height:158px;resize:vertical;padding:15px 16px;color:var(--ink);border:1px solid #e4cbd9;border-radius:15px;outline:none;background:#fffafd;transition:.18s}
+    textarea:focus{border-color:#cf73a1;box-shadow:0 0 0 4px rgba(193,79,135,.12)}textarea::placeholder{color:#aa8c9e}
+    .actions,.test-tools{display:flex;flex-wrap:wrap;gap:9px}.actions{margin-top:12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 15px;border:1px solid transparent;border-radius:12px;font-size:13px;font-weight:800;transition:.12s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:linear-gradient(135deg,#cf5f96,#ad4179);color:#fff;box-shadow:0 6px 14px rgba(193,79,135,.22)}.btn-primary:hover{background:linear-gradient(135deg,#bd4d84,#943262)}.btn-secondary{background:#fbedf5;color:#7f4165;border-color:#ecd3e1}.btn-secondary:hover{background:#f7dfec}.btn-quiet{background:transparent;color:#816779;border-color:#ead9e3}.btn-small{min-height:34px;padding:7px 10px;font-size:12px}
+    .file-label{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:8px 12px;color:#82516d;border:1px dashed #dcb8cd;border-radius:12px;cursor:pointer;font-size:12px;font-weight:800}.file-label:hover{background:#fff1f8}.file-label input{display:none}.helper{margin-top:12px;color:#907687;font-size:12px}
+    .side{padding:21px}.side h3{margin:0 0 12px;font:650 20px Georgia,serif}.step{display:grid;grid-template-columns:27px 1fr;gap:10px;padding:11px 0;border-top:1px solid #f2e5ed}.step-num{display:grid;place-items:center;width:25px;height:25px;border-radius:9px;background:linear-gradient(145deg,#fae1ee,#eee2fa);color:#963f70;font-size:12px;font-weight:800}.step strong{display:block;margin-bottom:2px;font-size:13px}.step span{display:block;color:var(--muted);font-size:12px}.privacy{margin-top:14px;padding:12px;border-radius:13px;background:linear-gradient(135deg,#fff0f7,#f5effc);color:#76546a;font-size:12px}
+    .results{display:none;margin-top:18px;overflow:hidden}.results.visible{display:block}.result-head{padding:18px 20px;border-bottom:1px solid var(--line);background:#fff8fc}.result-head-row{align-items:flex-start}.status-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:var(--blue-soft);color:#674a82;font-size:12px;font-weight:800}.status-pill.warn{background:var(--gold-soft);color:#825911}.status-pill.danger{background:var(--red-soft);color:#963c53}.status-pill.good{background:var(--teal-soft);color:#8f3566}.result-body{padding:18px 20px 20px}.finding{padding:15px;border:1px solid #ecdce5;border-radius:14px;background:#fff}.finding+.finding{margin-top:10px}.finding-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.finding h3{margin:0;font-size:15px}.law{padding:5px 8px;border-radius:8px;color:#754b66;background:#f9eaf2;font-size:11px;font-weight:800}.finding p{margin:9px 0 0;color:#765e6e;font-size:13px}.finding .recommend{color:#6e3557}.questions{margin:9px 0 0;padding-left:19px;color:#825f3c;font-size:12px}.entity-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.entity{border-radius:8px;padding:5px 8px;background:#f8eff4;color:#76566a;font-size:11px}.empty{padding:22px;text-align:center;color:#826b79;font-size:13px}
+    .section{margin-top:22px}.section-head{align-items:flex-end;margin-bottom:13px}.section-head p{margin:6px 0 0;color:var(--muted);font-size:13px}.test-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px}.test-card{display:flex;flex-direction:column;min-height:164px;padding:15px;border:1px solid var(--line);border-radius:16px;background:rgba(255,253,255,.86);transition:.15s}.test-card:hover{border-color:#d9a9c4;box-shadow:0 9px 20px rgba(111,50,85,.08)}.test-title{font-weight:800;font-size:13px}.test-state{color:#9a8491;font-size:11px}.test-state.ok,.test-outcome.ok{color:var(--teal-dark);font-weight:800}.test-state.fail,.test-outcome.fail{color:var(--red);font-weight:800}.test-text{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;min-height:40px;margin:8px 0 12px;color:#826b79;font-size:12px}.test-foot{margin-top:auto}.test-outcome{color:#8b7181;font-size:11px}.tests-summary{display:none;margin-top:15px;padding:14px 16px;border-radius:13px;background:var(--teal-soft);color:#8e3766;font-size:13px;font-weight:800}.tests-summary.visible{display:block}.footer{margin-top:26px;color:#9a8290;font-size:11px}.toast{position:fixed;right:20px;bottom:20px;z-index:5;padding:12px 16px;border-radius:12px;color:#fff;background:#6f315c;box-shadow:var(--shadow);font-size:13px;opacity:0;transform:translateY(10px);pointer-events:none;transition:.2s}.toast.show{opacity:1;transform:translateY(0)}
+    @media(max-width:780px){.shell{width:min(100% - 24px,650px);padding-top:20px}.hero{padding:29px 24px;border-radius:18px}.grid{grid-template-columns:1fr}.side{display:grid;grid-template-columns:1fr 1fr;column-gap:15px}.side h3,.privacy{grid-column:1/-1}.test-grid{grid-template-columns:1fr}.workbench{padding:18px}}
+    @media(max-width:480px){.topline{align-items:flex-start}.badge{max-width:150px;text-align:center}.hero{padding:25px 20px}.side{display:block}.card-head,.section-head,.footer{display:block}.counter{display:inline-block;margin-top:10px}.footer span{display:block;margin-top:5px}.finding-top{display:block}.law{display:inline-block;margin-top:8px}}
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <div class="topline"><div class="brand"><span class="brand-mark">✦</span><span>Информационная безопасность</span></div><div class="badge">Учебный прототип · работает локально</div></div>
+    <header class="hero">
+      <div class="eyebrow">Лабораторная работа № 2</div>
+      <h1>Анализ ситуаций с конфиденциальной информацией</h1>
+      <p>Опишите ситуацию. Экспертная система выделит факты, применит правила и покажет предварительный вывод, правовое основание и рекомендации.</p>
+      <div class="hero-tags"><span>19 правил</span><span>16 тестов</span><span>налоговая тайна</span><span>коммерческая тайна</span><span>банковская тайна</span><span>врачебная тайна</span><span>персональные данные</span></div>
+    </header>
+
+    <div class="grid">
+      <section class="card workbench" aria-labelledby="input-title">
+        <div class="card-head"><div><h2 id="input-title">Опишите ситуацию</h2><p class="sub">Укажите вид сведений, действие, получателя и документальное основание.</p></div><span class="counter">свободный ввод</span></div>
+        <div class="label-row"><label for="scenario">Текст для анализа</label><span class="tiny" id="char-count">0 / 3000</span></div>
+        <textarea id="scenario" maxlength="3000" placeholder="Например: сотрудник ФНС передал данные о налоговых платежах компании конкуренту."></textarea>
+        <div class="actions">
+          <button class="btn btn-primary" id="analyze-btn" type="button">⌕ Проверить ситуацию</button>
+          <button class="btn btn-secondary" id="example-btn" type="button">Подставить пример</button>
+          <button class="btn btn-quiet" id="clear-btn" type="button">Очистить</button>
+          <label class="file-label" for="file-input">＋ Загрузить .txt<input id="file-input" type="file" accept=".txt,text/plain"></label>
+        </div>
+        <div class="helper">Результат является учебной предварительной классификацией, а не юридическим заключением.</div>
+        <section class="card results" id="result-panel" aria-live="polite">
+          <div class="result-head"><div class="result-head-row"><div><div class="tiny">РЕЗУЛЬТАТ АНАЛИЗА</div><h2 id="result-title" style="margin-top:5px;font-size:21px">—</h2></div><span class="status-pill" id="status-pill">Ожидание</span></div></div>
+          <div class="result-body" id="result-body"></div>
+        </section>
+      </section>
+
+      <aside class="card side">
+        <h3>Как пользоваться</h3>
+        <div class="step"><div class="step-num">1</div><div><strong>Опишите фактами</strong><span>Какие сведения, кто передал и кому?</span></div></div>
+        <div class="step"><div class="step-num">2</div><div><strong>Запустите анализ</strong><span>Система извлечёт факты и применит правила.</span></div></div>
+        <div class="step"><div class="step-num">3</div><div><strong>Проверьте вывод</strong><span>Изучите норму, рекомендацию и вопросы.</span></div></div>
+        <div class="privacy">Безопасность: текст обрабатывается только в браузере, не отправляется в интернет и не сохраняется.</div>
+      </aside>
+    </div>
+
+    <section class="section" aria-labelledby="tests-title">
+      <div class="section-head"><div><h2 id="tests-title">Тестовый стенд</h2><p>Функциональные сценарии и технические проверки системы.</p></div><div class="test-tools"><button class="btn btn-primary" id="run-all" type="button">▶ Запустить 16 тестов</button><button class="btn btn-quiet btn-small" id="reset-tests" type="button">Сбросить</button></div></div>
+      <div class="test-grid" id="test-grid"></div>
+      <div class="tests-summary" id="tests-summary" role="status"></div>
+    </section>
+    <footer class="footer"><span>Лабораторная работа № 2 · Экспертная система конфиденциальности</span><span>Перед практическим решением необходимо проверить факты и актуальную редакцию законодательства.</span></footer>
+  </main>
+  <div class="toast" id="toast" role="status"></div>
+
+  <script>
+    'use strict';
+    const DICTIONARIES = {
+      subjects:{'сотрудник':['сотрудник','работник','инженер','санитар'],'фнс':['фнс','налоговая','налоговой службы','налоговый орган'],'банк':['банк','кредитная организация'],'врач':['врач','доктор','медработник','больница','медучреждение'],'клиент':['клиент','пациент','гражданин'],'компания':['компания','организация','предприятие']},
+      recipients:{'конкурент':['конкурент','конкуренту'],'третье лицо':['третье лицо','третьему лицу','посторонн','другу','сосед'],'полиция':['полици','мвд','правоохранитель'],'нотариус':['нотариус','нотариусу'],'росфинмониторинг':['росфинмониторинг'],'налоговый орган':['налоговый орган','фнс','налоговую'],'адвокат':['адвокат','представитель'],'иностранный орган':['иностранн','зарубежн'],'аудитор':['аудитор','аудит','due diligence','дью-дилидженс'],'социальная сеть':['соцсет','социальной сети','профил','пост','опубликовал']},
+      objects:{'персональные данные':['персональн','пдн','база клиентов'],'коммерческая тайна':['коммерческ','секрет производства','ноу-хау','формул','исходный код','архитектур'],'налоговая тайна':['налогов','налоговые платежи','налоговых платежах','налоговые обязательства','доход','оборот'],'банковская тайна':['банковск','счёт','счет','вклад','выписк','операци'],'врачебная тайна':['врачебн','диагноз','здоров','пациент','вич','ветрянк','мрт','огнестрельн'],'государственная тайна':['пусковая установка','пусковую установку','военная часть','секретный объект','государственная тайна']},
+      actions:{'передача':['передал','передала','передали','передача','передачу','направил','скинул','сообщил','раскрыл','выдал'],'публикация':['опубликовал','опубликовала','публикац','разместил','выложил'],'запрос':['запросил','запрашивает','требует','просит предоставить'],'отказ':['отказал','отказала','отказано','отказывает'],'использование':['использует','использовал','выпустил продукт','создал продукт']}
+    };
+
+    const TESTS = [
+      {title:'Налоговая тайна конкуренту',text:'Сотрудник ФНС передал данные о налоговых платежах компании конкуренту.',rule:'R01'},
+      {title:'Налоговый контроль',text:'Компания передала налоговые сведения в ФНС для проведения проверки.',rule:'R02'},
+      {title:'Аудит с NDA',text:'Формула передана внешнему аудитору. Соглашение о конфиденциальности подписано.',rule:'R03'},
+      {title:'Аудит без NDA',text:'Коммерческая тайна передана для внешнего аудита.',rule:'R04'},
+      {title:'Несостоявшаяся сделка',text:'Компания получила коммерческую тайну при due diligence. Сделка не состоялась, но компания использует формулу.',rule:'R05'},
+      {title:'Персональные данные без согласия',text:'Сотрудник передал базу персональных данных клиентов третьему лицу без согласия.',rule:'R08'},
+      {title:'Персональные данные с согласием',text:'Клиент дал письменное согласие на передачу персональных данных третьему лицу.',rule:'R07'},
+      {title:'Отказ нотариусу',text:'Банк отказал нотариусу в данных о счетах умершего клиента, хотя был письменный запрос нотариуса по наследственному делу.',rule:'R09'},
+      {title:'Росфинмониторинг',text:'Банк передал сведения об операциях клиента в Росфинмониторинг.',rule:'R12'},
+      {title:'Устная доверенность',text:'Банк отказал адвокату в выписке по счету клиента, потому что представлена устная доверенность.',rule:'R14'},
+      {title:'Диагноз постороннему',text:'Санитар по секрету сообщил другу диагноз пациента — ветрянка.',rule:'R17'},
+      {title:'Устный запрос полиции',text:'Врач передал полиции данные пациента по устному запросу.',rule:'R16'},
+      {title:'Иностранный запрос',text:'Иностранная налоговая служба запросила налоговые сведения российской компании.',rule:'R18'},
+      {title:'Возможная государственная тайна',text:'Я видел пусковую установку и хочу отправить фотографию другу.',rule:'R19'},
+      {title:'Пустой текст',technical:'empty'},
+      {title:'Безопасная обработка',technical:'privacy'}
+    ];
+
+    const $=id=>document.getElementById(id);
+    const hasAny=(text,words)=>words.some(word=>text.includes(word));
+    const contains=(set,...values)=>values.some(value=>set.has(value));
+    const decision=(status,law,reason,action,questions=[],ruleId='')=>({status,law,reason,action,questions,ruleId});
+
+    function normalize(text){return text.toLocaleLowerCase('ru-RU').replaceAll('ё','е').replace(/[\n\r\t]+/g,' ').replace(/\s+/g,' ').trim()}
+    function extractFacts(source){
+      const text=normalize(source),facts={originalText:source,normalizedText:text,subjects:new Set(),recipients:new Set(),objects:new Set(),actions:new Set(),context:new Set()};
+      for(const [category,mapping] of Object.entries(DICTIONARIES)) for(const [name,variants] of Object.entries(mapping)) if(hasAny(text,variants)) facts[category].add(name);
+      const negatedConsent=hasAny(text,['без согласия','согласие не','согласия нет','не получено согласие']);
+      if(hasAny(text,['письменное согласие','письменного согласия','дал согласие','с согласия'])&&!negatedConsent) facts.context.add('согласие');
+      if(negatedConsent) facts.context.add('нет согласия');
+      if(hasAny(text,['nda','соглашение о конфиденциальности','соглашение подписано'])) facts.context.add('nda');
+      if(hasAny(text,['письменный запрос','письменному запросу','официальный запрос','запрос нотариуса'])) facts.context.add('письменный запрос');
+      if(hasAny(text,['устный запрос','устная доверенност','устной доверенност','устно'])) facts.context.add('устное основание');
+      if(hasAny(text,['письменная доверенность','нотариальная доверенность'])) facts.context.add('письменная доверенность');
+      if(hasAny(text,['проверка','проверки','налоговый контроль'])) facts.context.add('проверка');
+      if(hasAny(text,['наследств','умерш','после смерти'])) facts.context.add('наследственное дело');
+      if(hasAny(text,['сделка не состоялась','несостоявшейся сделки','сделка сорвалась'])) facts.context.add('сделка не состоялась');
+      if(hasAny(text,['по секрету','тайно','закрытом профиле'])) facts.context.add('неофициально');
+      if(hasAny(text,['внешний аудит','внешнего аудита','для аудита','аудитор'])) facts.context.add('аудит');
+      if(hasAny(text,['суд','решение суда','судебный'])) facts.context.add('суд');
+      return facts;
+    }
+
+    function evaluate(f){
+      const d=[],o=f.objects,r=f.recipients,a=f.actions,c=f.context;
+      if(o.has('налоговая тайна')&&r.has('конкурент')&&contains(a,'передача','публикация')) d.push(decision('НАРУШЕНИЕ','ст. 102 НК РФ; возможно ст. 13.14 КоАП РФ или ст. 183 УК РФ','Налоговые сведения переданы конкуренту без законного основания.','Заблокировать передачу, сохранить доказательства и провести проверку.',[],'R01'));
+      if(o.has('налоговая тайна')&&r.has('налоговый орган')&&c.has('проверка')) d.push(decision('ЗАКОННО','ст. 82, 93.1 и 102 НК РФ','Сведения используются налоговым органом в целях налогового контроля.','Передать только необходимый объём по защищённому каналу.',[],'R02'));
+      if(o.has('коммерческая тайна')&&r.has('аудитор')&&c.has('аудит')) c.has('nda')?d.push(decision('ЗАКОННО','Федеральный закон № 98-ФЗ; условия NDA','Передача аудитору ограничена целью аудита и NDA.','Передать минимальный объём и зарегистрировать доступ.',[],'R03')):d.push(decision('ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА','Федеральный закон № 98-ФЗ','Не найдено соглашение о конфиденциальности с аудитором.','До проверки не передавать сведения.',['Подписано ли NDA?','Каков перечень сведений?'],'R04'));
+      if(o.has('коммерческая тайна')&&a.has('использование')&&c.has('сделка не состоялась')) d.push(decision('НАРУШЕНИЕ','ст. 434.1, 1465–1472 ГК РФ; Закон № 98-ФЗ','Сведения использованы за пределами цели переговоров.','Прекратить использование и зафиксировать происхождение сведений.',[],'R05'));
+      if(o.has('коммерческая тайна')&&a.has('публикация')&&r.has('социальная сеть')) d.push(decision('НАРУШЕНИЕ','ст. 10–11 Федерального закона № 98-ФЗ','Исходный код раскрыт постороннему кругу лиц.','Удалить публикацию, сохранить доказательства и провести проверку.',[],'R06'));
+      if(o.has('персональные данные')&&r.has('третье лицо')&&a.has('передача')) c.has('согласие')&&!c.has('нет согласия')?d.push(decision('ЗАКОННО','ст. 6 и 9 Федерального закона № 152-ФЗ','Найдено указание на письменное согласие субъекта.','Проверить объём согласия и передать только разрешённые данные.',[],'R07')):d.push(decision('НАРУШЕНИЕ','ст. 6, 7 и 9 Федерального закона № 152-ФЗ','Нет подтверждённого основания передачи персональных данных.','Заблокировать передачу или обезличить данные.',[],'R08'));
+      if(o.has('банковская тайна')&&r.has('нотариус')&&c.has('наследственное дело')) a.has('отказ')&&c.has('письменный запрос')?d.push(decision('НАРУШЕНИЕ','ст. 26 Федерального закона № 395-1','Банк отказал нотариусу при надлежащем запросе.','Предоставить сведения в пределах запроса.',[],'R09')):c.has('письменный запрос')?d.push(decision('ЗАКОННО','ст. 26 Федерального закона № 395-1','Нотариус вправе получить сведения по наследственному делу.','Передать сведения по защищённому каналу.',[],'R10')):d.push(decision('ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА','ст. 26 Федерального закона № 395-1','Не подтверждены форма запроса и полномочия нотариуса.','Запросить официальный документ.',['Есть ли номер наследственного дела?','Подписан ли запрос?'],'R11'));
+      if(o.has('банковская тайна')&&r.has('росфинмониторинг')&&a.has('передача')) d.push(decision('ЗАКОННО','ст. 7 Федерального закона № 115-ФЗ; ст. 26 Закона № 395-1','Передача предусмотрена законом.','Не раскрывать клиенту содержание сообщения.',[],'R12'));
+      if(o.has('банковская тайна')&&r.has('адвокат')) c.has('письменная доверенность')?d.push(decision('ЗАКОННО','ст. 185 ГК РФ; ст. 26 Закона № 395-1','Полномочия подтверждены письменной доверенностью.','Проверить срок и объём полномочий.',[],'R13')):c.has('устное основание')&&a.has('отказ')&&d.push(decision('ЗАКОННО','ст. 185 ГК РФ; ст. 26 Закона № 395-1','Устной доверенности недостаточно; отказ обоснован.','Запросить письменную доверенность.',[],'R14'));
+      if(o.has('врачебная тайна')&&r.has('полиция')&&contains(a,'передача','запрос')) (c.has('письменный запрос')||c.has('суд'))?d.push(decision('ЗАКОННО','ч. 4 ст. 13 Федерального закона № 323-ФЗ','Имеется документированное законное основание.','Передать минимально необходимые сведения.',[],'R15')):c.has('устное основание')&&d.push(decision('НАРУШЕНИЕ','ст. 13 Федерального закона № 323-ФЗ','Медицинские сведения передаются только по устному запросу.','Не передавать документацию; запросить письменное основание.',[],'R16'));
+      if(o.has('врачебная тайна')&&r.has('третье лицо')&&contains(a,'передача','публикация')) d.push(decision('НАРУШЕНИЕ','ст. 13 Федерального закона № 323-ФЗ','Диагноз раскрыт постороннему лицу без основания.','Прекратить распространение и провести проверку.',[],'R17'));
+      if(r.has('иностранный орган')&&contains(o,'налоговая тайна','банковская тайна','врачебная тайна','персональные данные')) d.push(decision('ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА','международный договор РФ и профильный закон','Нужно проверить компетенцию органа и канал обмена.','До проверки не передавать сведения.',['Какое государство направило запрос?','Есть ли международный договор?'],'R18'));
+      if(o.has('государственная тайна')) d.push(decision('ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА','Закон РФ № 5485-1 «О государственной тайне»','Обнаружены признаки иного режима охраны.','Не распространять текст; передать специалисту.',['Имеет ли объект гриф секретности?','Откуда получены сведения?'],'R19'));
+      if(!d.length){const q=[];if(!o.size)q.push('Какой вид конфиденциальной информации затронут?');if(!r.size)q.push('Кому передаются сведения?');if(!a.size)q.push('Какое действие совершено?');if(!c.has('согласие')&&!c.has('нет согласия'))q.push('Есть ли письменное согласие или иное основание?');d.push(decision('ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА','Основание не определено','Недостаточно фактов для однозначного вывода.','Направить ответственному специалисту.',q.length?q:['Уточните цель, получателя и основание.'],'R00'))}
+      return d;
+    }
+
+    function analyze(text){if(!text.trim())throw new Error('EMPTY_TEXT');const facts=extractFacts(text);return{facts,decisions:evaluate(facts)}}
+    function overall(decisions){if(decisions.some(x=>x.status==='НАРУШЕНИЕ'))return'НАРУШЕНИЕ';if(decisions.every(x=>x.status==='ЗАКОННО'))return'ЗАКОННО';return'ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА'}
+    function statusClass(status){return status==='НАРУШЕНИЕ'?'danger':status==='ЗАКОННО'?'good':'warn'}
+    function esc(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function renderResult(text,result){
+      $('result-panel').classList.add('visible');$('result-title').textContent=text.length>68?text.slice(0,65)+'…':text;
+      const status=overall(result.decisions),pill=$('status-pill');pill.textContent=status;pill.className=`status-pill ${statusClass(status)}`;
+      $('result-body').innerHTML=result.decisions.map(x=>`<article class="finding"><div class="finding-top"><h3>${esc(x.ruleId)} · ${esc(x.status)}</h3><span class="law">${esc(x.law)}</span></div><p>${esc(x.reason)}</p><p class="recommend"><strong>Рекомендация:</strong> ${esc(x.action)}</p>${x.questions.length?`<ul class="questions">${x.questions.map(q=>`<li>${esc(q)}</li>`).join('')}</ul>`:''}</article>`).join('');
+      const groups=[['Субъекты',result.facts.subjects],['Получатели',result.facts.recipients],['Объекты',result.facts.objects],['Действия',result.facts.actions],['Контекст',result.facts.context]].filter(([,v])=>v.size);
+      if(groups.length)$('result-body').innerHTML+=`<div class="entity-row">${groups.map(([k,v])=>`<span class="entity"><strong>${k}:</strong> ${[...v].map(esc).join(', ')}</span>`).join('')}</div>`;
+      $('result-body').innerHTML+='<div class="helper">Исходный текст не сохраняется. Вывод основан на учебной базе правил и требует проверки специалистом.</div>';
+    }
+    function runAnalysis(){const text=$('scenario').value.trim();if(!text){toast('Сначала введите описание ситуации.');$('scenario').focus();return null}const result=analyze(text);renderResult(text,result);$('result-panel').scrollIntoView({behavior:'smooth',block:'nearest'});return result}
+    function testResult(test){if(test.technical==='empty'){try{analyze('   ');return false}catch(e){return e.message==='EMPTY_TEXT'}}if(test.technical==='privacy'){const marker=['Секретный','текст','8472'].join(' ');analyze(marker);return !document.documentElement.innerHTML.includes(marker)&&!localStorage.getItem('expert-source-text')}return analyze(test.text).decisions.some(x=>x.ruleId===test.rule)}
+    function renderTests(){$('test-grid').innerHTML=TESTS.map((t,i)=>`<article class="test-card"><div class="test-top"><div class="test-title">${String(i+1).padStart(2,'0')} · ${esc(t.title)}</div><span class="test-state" id="test-state-${i}">не запускался</span></div><div class="test-text">${esc(t.text||'Техническая проверка интерфейса и обработки данных.')}</div><div class="test-foot"><span class="test-outcome" id="test-outcome-${i}">${t.rule?'Ожидается правило '+t.rule:'Ожидается успешная проверка'}</span><button class="btn btn-secondary btn-small" type="button" data-test="${i}">Проверить</button></div></article>`).join('');document.querySelectorAll('[data-test]').forEach(b=>b.addEventListener('click',()=>runTest(Number(b.dataset.test))))}
+    function runTest(i){const t=TESTS[i],passed=testResult(t),state=$('test-state-'+i),outcome=$('test-outcome-'+i);state.textContent=passed?'✓ пройден':'× не пройден';state.className='test-state '+(passed?'ok':'fail');outcome.textContent=passed?'Ожидаемый результат получен':'Результат не совпал с ожидаемым';outcome.className='test-outcome '+(passed?'ok':'fail');if(t.text){$('scenario').value=t.text;updateCount();renderResult(t.text,analyze(t.text))}return passed}
+    function runAll(){let passed=0;TESTS.forEach((_,i)=>{if(runTest(i))passed++});const s=$('tests-summary');s.textContent=passed===TESTS.length?`Все проверки пройдены: ${passed} из ${TESTS.length}.`:`Пройдено ${passed} из ${TESTS.length}. Проверьте отмеченные сценарии.`;s.classList.add('visible');s.style.background=passed===TESTS.length?'#f9e3ef':'#fbe5ea';s.style.color=passed===TESTS.length?'#8f3566':'#963c53';s.scrollIntoView({behavior:'smooth',block:'nearest'})}
+    function updateCount(){$('char-count').textContent=`${$('scenario').value.length} / 3000`}
+    let toastTimer;function toast(message){const n=$('toast');n.textContent=message;n.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>n.classList.remove('show'),2300)}
+    $('scenario').addEventListener('input',updateCount);$('analyze-btn').addEventListener('click',runAnalysis);$('scenario').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')runAnalysis()});$('example-btn').addEventListener('click',()=>{$('scenario').value=TESTS[0].text;updateCount();$('scenario').focus()});$('clear-btn').addEventListener('click',()=>{$('scenario').value='';updateCount();$('result-panel').classList.remove('visible');$('scenario').focus()});$('file-input').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{$('scenario').value=(await file.text()).slice(0,3000);updateCount();toast('Текст загружен. Нажмите «Проверить ситуацию».')}catch{toast('Не удалось прочитать файл.')}e.target.value=''});$('run-all').addEventListener('click',runAll);$('reset-tests').addEventListener('click',()=>{TESTS.forEach((_,i)=>{$('test-state-'+i).textContent='не запускался';$('test-state-'+i).className='test-state';$('test-outcome-'+i).textContent=TESTS[i].rule?'Ожидается правило '+TESTS[i].rule:'Ожидается успешная проверка';$('test-outcome-'+i).className='test-outcome'});$('tests-summary').classList.remove('visible');toast('Результаты тестов сброшены')});renderTests();
+  </script>
+</body>
+</html>
