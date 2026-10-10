@@ -34,7 +34,7 @@
     .label-row{margin:18px 0 8px}label{font-size:13px;font-weight:800}.tiny{color:var(--muted);font-size:12px}
     textarea{width:100%;min-height:158px;resize:vertical;padding:15px 16px;color:var(--ink);border:1px solid #e4cbd9;border-radius:15px;outline:none;background:#fffafd;transition:.18s}
     textarea:focus{border-color:#cf73a1;box-shadow:0 0 0 4px rgba(193,79,135,.12)}textarea::placeholder{color:#aa8c9e}
-    .actions,.test-tools{display:flex;flex-wrap:wrap;gap:9px}.actions{margin-top:12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 15px;border:1px solid transparent;border-radius:12px;font-size:13px;font-weight:800;transition:.12s}.btn:hover{transform:translateY(-1px)}.btn-primary{background:linear-gradient(135deg,#cf5f96,#ad4179);color:#fff;box-shadow:0 6px 14px rgba(193,79,135,.22)}.btn-primary:hover{background:linear-gradient(135deg,#bd4d84,#943262)}.btn-secondary{background:#fbedf5;color:#7f4165;border-color:#ecd3e1}.btn-secondary:hover{background:#f7dfec}.btn-quiet{background:transparent;color:#816779;border-color:#ead9e3}.btn-small{min-height:34px;padding:7px 10px;font-size:12px}
+    .actions,.test-tools{display:flex;flex-wrap:wrap;gap:9px}.actions{margin-top:12px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:42px;padding:10px 15px;border:1px solid transparent;border-radius:12px;font-size:13px;font-weight:800;transition:.12s}.btn:hover{transform:translateY(-1px)}.btn:disabled{cursor:not-allowed;opacity:.48;transform:none}.btn-primary{background:linear-gradient(135deg,#cf5f96,#ad4179);color:#fff;box-shadow:0 6px 14px rgba(193,79,135,.22)}.btn-primary:hover{background:linear-gradient(135deg,#bd4d84,#943262)}.btn-secondary{background:#fbedf5;color:#7f4165;border-color:#ecd3e1}.btn-secondary:hover{background:#f7dfec}.btn-quiet{background:transparent;color:#816779;border-color:#ead9e3}.btn-small{min-height:34px;padding:7px 10px;font-size:12px}
     .file-label{display:inline-flex;align-items:center;gap:7px;min-height:42px;padding:8px 12px;color:#82516d;border:1px dashed #dcb8cd;border-radius:12px;cursor:pointer;font-size:12px;font-weight:800}.file-label:hover{background:#fff1f8}.file-label input{display:none}.helper{margin-top:12px;color:#907687;font-size:12px}
     .side{padding:21px}.side h3{margin:0 0 12px;font:650 20px Georgia,serif}.step{display:grid;grid-template-columns:27px 1fr;gap:10px;padding:11px 0;border-top:1px solid #f2e5ed}.step-num{display:grid;place-items:center;width:25px;height:25px;border-radius:9px;background:linear-gradient(145deg,#fae1ee,#eee2fa);color:#963f70;font-size:12px;font-weight:800}.step strong{display:block;margin-bottom:2px;font-size:13px}.step span{display:block;color:var(--muted);font-size:12px}.privacy{margin-top:14px;padding:12px;border-radius:13px;background:linear-gradient(135deg,#fff0f7,#f5effc);color:#76546a;font-size:12px}
     .results{display:none;margin-top:18px;overflow:hidden}.results.visible{display:block}.result-head{padding:18px 20px;border-bottom:1px solid var(--line);background:#fff8fc}.result-head-row{align-items:flex-start}.status-pill{display:inline-flex;align-items:center;gap:7px;padding:7px 10px;border-radius:999px;background:var(--blue-soft);color:#674a82;font-size:12px;font-weight:800}.status-pill.warn{background:var(--gold-soft);color:#825911}.status-pill.danger{background:var(--red-soft);color:#963c53}.status-pill.good{background:var(--teal-soft);color:#8f3566}.result-body{padding:18px 20px 20px}.finding{padding:15px;border:1px solid #ecdce5;border-radius:14px;background:#fff}.finding+.finding{margin-top:10px}.finding-top{display:flex;align-items:center;justify-content:space-between;gap:12px}.finding h3{margin:0;font-size:15px}.law{padding:5px 8px;border-radius:8px;color:#754b66;background:#f9eaf2;font-size:11px;font-weight:800}.finding p{margin:9px 0 0;color:#765e6e;font-size:13px}.finding .recommend{color:#6e3557}.questions{margin:9px 0 0;padding-left:19px;color:#825f3c;font-size:12px}.entity-row{display:flex;flex-wrap:wrap;gap:7px;margin-top:13px}.entity{border-radius:8px;padding:5px 8px;background:#f8eff4;color:#76566a;font-size:11px}.empty{padding:22px;text-align:center;color:#826b79;font-size:13px}
@@ -76,12 +76,12 @@
         <div class="step"><div class="step-num">1</div><div><strong>Опишите фактами</strong><span>Какие сведения, кто передал и кому?</span></div></div>
         <div class="step"><div class="step-num">2</div><div><strong>Запустите анализ</strong><span>Система извлечёт факты и применит правила.</span></div></div>
         <div class="step"><div class="step-num">3</div><div><strong>Проверьте вывод</strong><span>Изучите норму, рекомендацию и вопросы.</span></div></div>
-        <div class="privacy">Безопасность: текст обрабатывается только в браузере, не отправляется в интернет и не сохраняется.</div>
+        <div class="privacy">Безопасность: текст обрабатывается только в браузере и не отправляется в интернет. В скачиваемом журнале исходный текст сохраняется только в частично замаскированном виде.</div>
       </aside>
     </div>
 
     <section class="section" aria-labelledby="tests-title">
-      <div class="section-head"><div><h2 id="tests-title">Тестовый стенд</h2><p>Функциональные сценарии и технические проверки системы.</p></div><div class="test-tools"><button class="btn btn-primary" id="run-all" type="button">▶ Запустить 16 тестов</button><button class="btn btn-quiet btn-small" id="reset-tests" type="button">Сбросить</button></div></div>
+      <div class="section-head"><div><h2 id="tests-title">Тестовый стенд</h2><p>Функциональные сценарии и технические проверки системы.</p></div><div class="test-tools"><button class="btn btn-primary" id="run-all" type="button">▶ Запустить 16 тестов</button><button class="btn btn-secondary btn-small" id="download-log" type="button" disabled>⇩ Скачать единый журнал</button><button class="btn btn-quiet btn-small" id="reset-tests" type="button">Сбросить</button></div></div>
       <div class="test-grid" id="test-grid"></div>
       <div class="tests-summary" id="tests-summary" role="status"></div>
     </section>
@@ -121,6 +121,7 @@
     const hasAny=(text,words)=>words.some(word=>text.includes(word));
     const contains=(set,...values)=>values.some(value=>set.has(value));
     const decision=(status,law,reason,action,questions=[],ruleId='')=>({status,law,reason,action,questions,ruleId});
+    let lastTestLog='';
 
     function normalize(text){return text.toLocaleLowerCase('ru-RU').replaceAll('ё','е').replace(/[\n\r\t]+/g,' ').replace(/\s+/g,' ').trim()}
     function extractFacts(source){
@@ -165,6 +166,43 @@
     function overall(decisions){if(decisions.some(x=>x.status==='НАРУШЕНИЕ'))return'НАРУШЕНИЕ';if(decisions.every(x=>x.status==='ЗАКОННО'))return'ЗАКОННО';return'ТРЕБУЕТСЯ РУЧНАЯ ПРОВЕРКА'}
     function statusClass(status){return status==='НАРУШЕНИЕ'?'danger':status==='ЗАКОННО'?'good':'warn'}
     function esc(value){return String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+    function maskSensitiveData(text){
+      return String(text).replace(/[\p{L}\p{N}]+/gu,word=>{
+        if(word.length<=3)return'*'.repeat(word.length);
+        return word[0]+'*'.repeat(Math.min(word.length-2,8))+word[word.length-1];
+      });
+    }
+    function makeLogRecord(test,index,passed,result){
+      const decisions=result?.decisions||[];
+      const status=decisions.length?overall(decisions):passed?'УСПЕШНАЯ ТЕХНИЧЕСКАЯ ПРОВЕРКА':'ОШИБКА ТЕХНИЧЕСКОЙ ПРОВЕРКИ';
+      const laws=[...new Set(decisions.map(item=>item.law))].join('; ')||'не применимо';
+      const rules=[...new Set(decisions.map(item=>item.ruleId).filter(Boolean))].join(', ')||'технический тест';
+      const source=test.text?maskSensitiveData(test.text):'[исходный текст отсутствует: техническая проверка]';
+      return [
+        `Тест ${String(index+1).padStart(2,'0')}: ${test.title}`,
+        `Результат теста: ${passed?'ПРОЙДЕН':'НЕ ПРОЙДЕН'}`,
+        `Ожидаемое правило: ${test.rule||'техническая проверка'}`,
+        `Сработавшее правило: ${rules}`,
+        `Вывод системы: ${status}`,
+        `Правовое основание: ${laws}`,
+        `Исходный текст: ${source}`
+      ].join('\n');
+    }
+    function makeLogFile(records,passed){
+      return [
+        'ЖУРНАЛ ТЕСТИРОВАНИЯ ЭКСПЕРТНОЙ СИСТЕМЫ',
+        `Дата формирования: ${new Date().toLocaleString('ru-RU')}`,
+        `Итог: пройдено ${passed} из ${TESTS.length}`,
+        'Исходные тексты частично замаскированы.',
+        '',
+        ...records.flatMap(record=>[record,'','-'.repeat(72),''])
+      ].join('\n').trimEnd()+'\n';
+    }
+    function downloadTestLog(){
+      if(!lastTestLog){toast('Сначала запустите все тесты.');return}
+      const blob=new Blob(['\ufeff',lastTestLog],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');
+      link.href=url;link.download='security_log.txt';document.body.appendChild(link);link.click();link.remove();URL.revokeObjectURL(url);toast('Единый журнал security_log.txt сформирован');
+    }
     function renderResult(text,result){
       $('result-panel').classList.add('visible');$('result-title').textContent=text.length>68?text.slice(0,65)+'…':text;
       const status=overall(result.decisions),pill=$('status-pill');pill.textContent=status;pill.className=`status-pill ${statusClass(status)}`;
@@ -174,13 +212,13 @@
       $('result-body').innerHTML+='<div class="helper">Исходный текст не сохраняется. Вывод основан на учебной базе правил и требует проверки специалистом.</div>';
     }
     function runAnalysis(){const text=$('scenario').value.trim();if(!text){toast('Сначала введите описание ситуации.');$('scenario').focus();return null}const result=analyze(text);renderResult(text,result);$('result-panel').scrollIntoView({behavior:'smooth',block:'nearest'});return result}
-    function testResult(test){if(test.technical==='empty'){try{analyze('   ');return false}catch(e){return e.message==='EMPTY_TEXT'}}if(test.technical==='privacy'){const marker=['Секретный','текст','8472'].join(' ');analyze(marker);return !document.documentElement.innerHTML.includes(marker)&&!localStorage.getItem('expert-source-text')}return analyze(test.text).decisions.some(x=>x.ruleId===test.rule)}
+    function testResult(test){if(test.technical==='empty'){try{analyze('   ');return false}catch(e){return e.message==='EMPTY_TEXT'}}if(test.technical==='privacy'){const marker=['Секретный','текст','8472'].join(' '),masked=maskSensitiveData(marker);analyze(marker);return masked!==marker&&!masked.includes(marker)&&!localStorage.getItem('expert-source-text')}return analyze(test.text).decisions.some(x=>x.ruleId===test.rule)}
     function renderTests(){$('test-grid').innerHTML=TESTS.map((t,i)=>`<article class="test-card"><div class="test-top"><div class="test-title">${String(i+1).padStart(2,'0')} · ${esc(t.title)}</div><span class="test-state" id="test-state-${i}">не запускался</span></div><div class="test-text">${esc(t.text||'Техническая проверка интерфейса и обработки данных.')}</div><div class="test-foot"><span class="test-outcome" id="test-outcome-${i}">${t.rule?'Ожидается правило '+t.rule:'Ожидается успешная проверка'}</span><button class="btn btn-secondary btn-small" type="button" data-test="${i}">Проверить</button></div></article>`).join('');document.querySelectorAll('[data-test]').forEach(b=>b.addEventListener('click',()=>runTest(Number(b.dataset.test))))}
-    function runTest(i){const t=TESTS[i],passed=testResult(t),state=$('test-state-'+i),outcome=$('test-outcome-'+i);state.textContent=passed?'✓ пройден':'× не пройден';state.className='test-state '+(passed?'ok':'fail');outcome.textContent=passed?'Ожидаемый результат получен':'Результат не совпал с ожидаемым';outcome.className='test-outcome '+(passed?'ok':'fail');if(t.text){$('scenario').value=t.text;updateCount();renderResult(t.text,analyze(t.text))}return passed}
-    function runAll(){let passed=0;TESTS.forEach((_,i)=>{if(runTest(i))passed++});const s=$('tests-summary');s.textContent=passed===TESTS.length?`Все проверки пройдены: ${passed} из ${TESTS.length}.`:`Пройдено ${passed} из ${TESTS.length}. Проверьте отмеченные сценарии.`;s.classList.add('visible');s.style.background=passed===TESTS.length?'#f9e3ef':'#fbe5ea';s.style.color=passed===TESTS.length?'#8f3566':'#963c53';s.scrollIntoView({behavior:'smooth',block:'nearest'})}
+    function runTest(i){const t=TESTS[i],passed=testResult(t),result=t.text?analyze(t.text):null,state=$('test-state-'+i),outcome=$('test-outcome-'+i);state.textContent=passed?'✓ пройден':'× не пройден';state.className='test-state '+(passed?'ok':'fail');outcome.textContent=passed?'Ожидаемый результат получен':'Результат не совпал с ожидаемым';outcome.className='test-outcome '+(passed?'ok':'fail');if(result){$('scenario').value=t.text;updateCount();renderResult(t.text,result)}return{passed,result}}
+    function runAll(){let passed=0;const records=[];TESTS.forEach((test,i)=>{const execution=runTest(i);if(execution.passed)passed++;records.push(makeLogRecord(test,i,execution.passed,execution.result))});lastTestLog=makeLogFile(records,passed);$('download-log').disabled=false;const s=$('tests-summary');s.textContent=passed===TESTS.length?`Все проверки пройдены: ${passed} из ${TESTS.length}. Единый журнал готов к скачиванию.`:`Пройдено ${passed} из ${TESTS.length}. Проверьте отмеченные сценарии и скачайте журнал.`;s.classList.add('visible');s.style.background=passed===TESTS.length?'#f9e3ef':'#fbe5ea';s.style.color=passed===TESTS.length?'#8f3566':'#963c53';s.scrollIntoView({behavior:'smooth',block:'nearest'})}
     function updateCount(){$('char-count').textContent=`${$('scenario').value.length} / 3000`}
     let toastTimer;function toast(message){const n=$('toast');n.textContent=message;n.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>n.classList.remove('show'),2300)}
-    $('scenario').addEventListener('input',updateCount);$('analyze-btn').addEventListener('click',runAnalysis);$('scenario').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')runAnalysis()});$('example-btn').addEventListener('click',()=>{$('scenario').value=TESTS[0].text;updateCount();$('scenario').focus()});$('clear-btn').addEventListener('click',()=>{$('scenario').value='';updateCount();$('result-panel').classList.remove('visible');$('scenario').focus()});$('file-input').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{$('scenario').value=(await file.text()).slice(0,3000);updateCount();toast('Текст загружен. Нажмите «Проверить ситуацию».')}catch{toast('Не удалось прочитать файл.')}e.target.value=''});$('run-all').addEventListener('click',runAll);$('reset-tests').addEventListener('click',()=>{TESTS.forEach((_,i)=>{$('test-state-'+i).textContent='не запускался';$('test-state-'+i).className='test-state';$('test-outcome-'+i).textContent=TESTS[i].rule?'Ожидается правило '+TESTS[i].rule:'Ожидается успешная проверка';$('test-outcome-'+i).className='test-outcome'});$('tests-summary').classList.remove('visible');toast('Результаты тестов сброшены')});renderTests();
+    $('scenario').addEventListener('input',updateCount);$('analyze-btn').addEventListener('click',runAnalysis);$('scenario').addEventListener('keydown',e=>{if((e.ctrlKey||e.metaKey)&&e.key==='Enter')runAnalysis()});$('example-btn').addEventListener('click',()=>{$('scenario').value=TESTS[0].text;updateCount();$('scenario').focus()});$('clear-btn').addEventListener('click',()=>{$('scenario').value='';updateCount();$('result-panel').classList.remove('visible');$('scenario').focus()});$('file-input').addEventListener('change',async e=>{const file=e.target.files?.[0];if(!file)return;try{$('scenario').value=(await file.text()).slice(0,3000);updateCount();toast('Текст загружен. Нажмите «Проверить ситуацию».')}catch{toast('Не удалось прочитать файл.')}e.target.value=''});$('run-all').addEventListener('click',runAll);$('download-log').addEventListener('click',downloadTestLog);$('reset-tests').addEventListener('click',()=>{TESTS.forEach((_,i)=>{$('test-state-'+i).textContent='не запускался';$('test-state-'+i).className='test-state';$('test-outcome-'+i).textContent=TESTS[i].rule?'Ожидается правило '+TESTS[i].rule:'Ожидается успешная проверка';$('test-outcome-'+i).className='test-outcome'});lastTestLog='';$('download-log').disabled=true;$('tests-summary').classList.remove('visible');toast('Результаты тестов сброшены')});renderTests();
   </script>
 </body>
 </html>
